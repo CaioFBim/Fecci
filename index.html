@@ -19,41 +19,38 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
         #game-container {
             background-color: #34495e;
             border: 4px solid #f1c40f;
             border-radius: 10px;
-            padding: 40px;
+            padding: 20px;
             text-align: center;
-            max-width: 600px;
+            max-width: 800px;
             width: 100%;
+            height: 95vh;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
 
-        h1, h2, h3 {
-            color: #f1c40f;
-            margin-bottom: 20px;
-        }
-
-        .hint {
-            font-size: 0.9em;
-            color: #bdc3c7;
-            margin-bottom: 20px;
-        }
+        h1, h2, h3 { color: #f1c40f; margin-bottom: 15px; }
+        .hint { font-size: 0.9em; color: #bdc3c7; margin-bottom: 15px; }
 
         .button-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 10px;
         }
 
         button {
             background-color: #e67e22;
             color: white;
             border: 2px solid #d35400;
-            padding: 15px;
+            padding: 10px;
             font-size: 1.1em;
             font-weight: bold;
             border-radius: 5px;
@@ -61,40 +58,106 @@
             transition: 0.2s;
         }
 
-        button:hover {
-            background-color: #d35400;
-            transform: scale(1.05);
-        }
+        button:hover { background-color: #d35400; transform: scale(1.05); }
+        button:disabled { background-color: #7f8c8d; border-color: #95a5a6; cursor: not-allowed; transform: none; }
 
-        input[type="text"] {
+        input[type="text"], input[type="number"] {
             padding: 10px;
             font-size: 1.2em;
-            width: 70%;
+            width: 80%;
             margin-bottom: 10px;
             border-radius: 5px;
             border: 2px solid #7f8c8d;
             text-align: center;
         }
 
-        .error {
-            color: #e74c3c;
-            margin-top: 15px;
+        .error { color: #e74c3c; margin-top: 10px; font-weight: bold; height: 20px; }
+        .success { color: #2ecc71; margin-top: 10px; font-weight: bold; height: 20px; }
+        .hidden { display: none !important; }
+
+        /* --- TELA DO JOGO --- */
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            background-color: #2c3e50;
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px solid #f1c40f;
+            font-size: 1.5em;
             font-weight: bold;
-            height: 20px;
+            margin-bottom: 20px;
         }
 
-        .hidden {
-            display: none !important;
+        .hp-text { color: #e74c3c; }
+        .coin-text { color: #f1c40f; }
+
+        .monster-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
         }
 
-        /* Modal */
-        .modal {
-            position: fixed;
+        .monster-display {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .monster-display img {
+            max-height: 250px;
+            border: 3px solid #e74c3c;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .health-bar-bg {
+            background-color: #555;
+            width: 300px;
+            height: 25px;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+            border: 2px solid #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .health-bar-fill {
+            background-color: #e74c3c;
+            height: 100%;
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .health-text {
+            position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            line-height: 21px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn-facil { background-color: #27ae60; border-color: #2ecc71; }
+        .btn-medio { background-color: #f39c12; border-color: #f1c40f; }
+        .btn-dificil { background-color: #c0392b; border-color: #e74c3c; }
+
+        /* Modal Generico */
+        .modal {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 10;
         }
 
         .modal-content {
@@ -104,30 +167,14 @@
             border-radius: 10px;
             border: 4px solid #e67e22;
             text-align: center;
-            max-width: 400px;
+            max-width: 500px;
+            width: 90%;
         }
-
-        .modal-content img {
-            max-width: 100%;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 2px solid #2c3e50;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .btn-yes { background-color: #27ae60; border-color: #2ecc71; }
-        .btn-yes:hover { background-color: #2ecc71; }
-        .btn-no { background-color: #c0392b; border-color: #e74c3c; }
-        .btn-no:hover { background-color: #e74c3c; }
     </style>
 </head>
 <body>
     <div id="game-container">
+        
         <!-- Tela 1: Quantidade de Jogadores -->
         <div id="screen-players" class="screen">
             <h1>Quantos aventureiros vão jogar?</h1>
@@ -145,44 +192,124 @@
         <div id="screen-selection" class="screen hidden">
             <h2 id="player-turn">Jogador 1, escolha sua profissão!</h2>
             <p class="hint">Profissões: Mago, Clérico, Paladino, Arqueiro, Bárbaro, Druida.</p>
-            
             <input type="text" id="class-input" placeholder="Digite a profissão..." autocomplete="off">
             <button onclick="checkCharacter()">Selecionar</button>
-            
             <p id="error-msg" class="error"></p>
         </div>
-    </div>
 
-    <!-- Modal de Confirmação -->
-    <div id="confirm-modal" class="modal hidden">
-        <div class="modal-content">
-            <h3>Você escolheu o <span id="confirm-name-display"></span>?</h3>
-            <img id="confirm-image" src="" alt="Ficha do Personagem">
-            <div class="modal-buttons">
-                <button class="btn-yes" onclick="confirmSelection()">Sim, é este!</button>
-                <button class="btn-no" onclick="cancelSelection()">Não, voltar</button>
+        <!-- Tela 3: O Jogo (Batalha) -->
+        <div id="screen-game" class="screen hidden">
+            <div class="stats-header">
+                <div class="hp-text">❤️ Vida: <span id="group-hp-display">30</span>/30</div>
+                <div class="coin-text">💰 Moedas: <span id="group-coins-display">0</span></div>
+            </div>
+
+            <!-- Buscar Monstro -->
+            <div id="monster-search-area">
+                <h3>Qual monstro apareceu?</h3>
+                <input type="text" id="monster-input" placeholder="Ex: Golem da Floresta" autocomplete="off">
+                <button onclick="summonMonster()">Invocar Monstro</button>
+                <p id="game-msg" class="error"></p>
+            </div>
+
+            <!-- Area de Combate (Oculta até invocar) -->
+            <div id="combat-area" class="monster-area hidden">
+                <div class="monster-display">
+                    <h2 id="monster-name-display">Nome do Monstro</h2>
+                    <img id="monster-image" src="" alt="Monstro">
+                    
+                    <div class="health-bar-bg">
+                        <div id="monster-hp-fill" class="health-bar-fill"></div>
+                        <div class="health-text"><span id="monster-hp-text">1</span> / <span id="monster-max-hp-text">1</span></div>
+                    </div>
+                    <p style="color: #e74c3c; font-weight: bold;">Dano do Monstro: <span id="monster-damage-text"></span></p>
+                </div>
+
+                <h3>Escolha o feitiço (ataque):</h3>
+                <div class="action-buttons">
+                    <button class="btn-facil" onclick="openQuestion('facil')">Fácil (0.3 Dano)</button>
+                    <button class="btn-medio" onclick="openQuestion('medio')">Médio (0.7 Dano)</button>
+                    <button class="btn-dificil" onclick="openQuestion('dificil')">Difícil (1 Dano)</button>
+                </div>
             </div>
         </div>
+
+        <!-- Modal de Confirmação de Personagem -->
+        <div id="confirm-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Você escolheu o <span id="confirm-name-display"></span>?</h3>
+                <img id="confirm-image" src="" alt="Ficha" style="max-width: 100%; border-radius: 5px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; gap: 10px;">
+                    <button style="background: #27ae60;" onclick="confirmSelection()">Sim, é este!</button>
+                    <button style="background: #c0392b;" onclick="cancelSelection()">Não, voltar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal da Conta Matemática -->
+        <div id="math-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2 id="math-title">Resolva a conta!</h2>
+                <h1 id="math-question" style="color: #2c3e50; font-size: 2.5em; margin: 20px 0;">2 + 2 = ?</h1>
+                <input type="number" id="math-answer" placeholder="Digite sua resposta">
+                <br>
+                <button onclick="checkMathAnswer()" style="width: 100%; margin-top: 10px;">Atacar!</button>
+                <p id="math-feedback" style="font-weight: bold; margin-top: 15px;"></p>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        // --- VARIÁVEIS DO GRUPO ---
         let maxPlayers = 0;
         let currentPlayer = 1;
         let selectedClasses = [];
+        
+        let groupHp = 30;
+        let groupCoins = 0;
 
+        // --- DADOS DOS PERSONAGENS ---
         const classFileMap = {
-            'mago': 'Mago.jpeg',
-            'clerico': 'Clérico.jpeg',
-            'clérico': 'Clérico.jpeg',
-            'paladino': 'Paladino.jpeg',
-            'arqueiro': 'Arqueiro.jpeg',
-            'barbaro': 'Bárbaro.jpeg',
-            'bárbaro': 'Bárbaro.jpeg',
-            'druida': 'Druida.jpeg'
+            'mago': 'Mago.jpeg', 'clerico': 'Clérico.jpeg', 'clérico': 'Clérico.jpeg',
+            'paladino': 'Paladino.jpeg', 'arqueiro': 'Arqueiro.jpeg',
+            'barbaro': 'Bárbaro.jpeg', 'bárbaro': 'Bárbaro.jpeg', 'druida': 'Druida.jpeg'
         };
-
         let pendingClass = ""; 
 
+        // --- DADOS DOS MONSTROS (Vida travada em 1 para teste) ---
+        const monsters = {
+            'guardião de pedra': { file: 'Guardião de Pedra.jpeg', hp: 1, maxHp: 1, damage: 1, coins: 2 },
+            'humano': { file: 'Humano.jpeg', hp: 1, maxHp: 1, damage: 3, coins: 2 },
+            'ladrões': { file: 'Ladrões.jpeg', hp: 1, maxHp: 1, damage: 1, coins: 2 },
+            'espírito da geometria': { file: 'Espírito da Geometria.jpeg', hp: 1, maxHp: 1, damage: 1, coins: 1 },
+            'golem da floresta': { file: 'Golem da Floresta.jpeg', hp: 1, maxHp: 1, damage: 1, coins: 1 },
+            'espírito da floresta': { file: 'Espírito da floresta.jpeg', hp: 1, maxHp: 1, damage: 2, coins: 2 },
+            'espírito da equação': { file: 'Espírito da Equação.jpeg', hp: 1, maxHp: 1, damage: 4, coins: 4 },
+            'humano da estatística': { file: 'Humano da Estatística.jpeg', hp: 1, maxHp: 1, damage: 2, coins: 2 },
+            'guardião da proporção': { file: 'Guardião da Proporção.jpeg', hp: 1, maxHp: 1, damage: 1, coins: 3 }
+        };
+
+        let currentActiveMonster = null;
+        let currentQuestion = null;
+
+        // --- CONTAS BÁSICAS PARA TESTE ---
+        const mathQuestions = {
+            facil: [
+                { q: "10 + 15", a: 25, dmg: 0.3 },
+                { q: "20 - 8", a: 12, dmg: 0.3 }
+            ],
+            medio: [
+                { q: "6 x 7", a: 42, dmg: 0.7 },
+                { q: "50 ÷ 2", a: 25, dmg: 0.7 }
+            ],
+            dificil: [
+                { q: "12 x 12", a: 144, dmg: 1.0 },
+                { q: "(10 x 5) - 15", a: 35, dmg: 1.0 }
+            ]
+        };
+
+        // --- FUNÇÕES DE SELEÇÃO DE JOGADOR ---
         function setPlayers(num) {
             maxPlayers = num;
             document.getElementById('screen-players').classList.add('hidden');
@@ -209,7 +336,7 @@
 
             const baseClass = classFileMap[typedClass]; 
             if (selectedClasses.includes(baseClass)) {
-                errorMsg.innerText = "Esta profissão já foi escolhida por outro jogador!";
+                errorMsg.innerText = "Esta profissão já foi escolhida!";
                 return;
             }
 
@@ -229,13 +356,134 @@
                 currentPlayer++;
                 updateScreenText();
             } else {
-                alert("Todos os personagens selecionados! Preparando o painel de batalha...");
+                // INICIA O JOGO
+                document.getElementById('screen-selection').classList.add('hidden');
+                document.getElementById('screen-game').classList.remove('hidden');
+                updateGroupUI();
             }
         }
 
         function cancelSelection() {
             document.getElementById('confirm-modal').classList.add('hidden');
             document.getElementById('class-input').focus();
+        }
+
+        // --- FUNÇÕES DO JOGO (BATALHA) ---
+        function updateGroupUI() {
+            document.getElementById('group-hp-display').innerText = groupHp;
+            document.getElementById('group-coins-display').innerText = groupCoins;
+            
+            if(groupHp <= 0) {
+                alert("GAME OVER! A vida do grupo chegou a zero.");
+                location.reload();
+            }
+        }
+
+        function summonMonster() {
+            const input = document.getElementById('monster-input').value.trim().toLowerCase();
+            const msg = document.getElementById('game-msg');
+
+            if(!monsters[input]) {
+                msg.innerText = "Monstro não encontrado! Verifique a escrita.";
+                return;
+            }
+
+            msg.innerText = "";
+            
+            // Clona o objeto do monstro para não alterar os dados base
+            currentActiveMonster = JSON.parse(JSON.stringify(monsters[input]));
+            currentActiveMonster.name = input.toUpperCase();
+
+            // Atualiza UI
+            document.getElementById('monster-search-area').classList.add('hidden');
+            document.getElementById('combat-area').classList.remove('hidden');
+            
+            document.getElementById('monster-name-display').innerText = currentActiveMonster.name;
+            document.getElementById('monster-image').src = currentActiveMonster.file;
+            document.getElementById('monster-damage-text').innerText = currentActiveMonster.damage;
+            
+            updateMonsterHPUI();
+        }
+
+        function updateMonsterHPUI() {
+            const hpText = document.getElementById('monster-hp-text');
+            const maxHpText = document.getElementById('monster-max-hp-text');
+            const fill = document.getElementById('monster-hp-fill');
+
+            // Arredonda para 1 casa decimal para evitar erros de ponto flutuante (ex: 0.700000001)
+            currentActiveMonster.hp = Math.round(currentActiveMonster.hp * 10) / 10;
+
+            hpText.innerText = currentActiveMonster.hp;
+            maxHpText.innerText = currentActiveMonster.maxHp;
+            
+            let perc = (currentActiveMonster.hp / currentActiveMonster.maxHp) * 100;
+            if(perc < 0) perc = 0;
+            fill.style.width = perc + '%';
+        }
+
+        function openQuestion(dificuldade) {
+            const arr = mathQuestions[dificuldade];
+            // Sorteia uma pergunta da dificuldade escolhida
+            currentQuestion = arr[Math.floor(Math.random() * arr.length)];
+
+            document.getElementById('math-question').innerText = currentQuestion.q + " = ?";
+            document.getElementById('math-answer').value = "";
+            document.getElementById('math-feedback').innerText = "";
+            document.getElementById('math-feedback').className = "";
+            document.getElementById('math-modal').classList.remove('hidden');
+            document.getElementById('math-answer').focus();
+        }
+
+        function checkMathAnswer() {
+            const answer = parseFloat(document.getElementById('math-answer').value);
+            const feedback = document.getElementById('math-feedback');
+
+            if (isNaN(answer)) {
+                feedback.innerText = "Por favor, digite um número!";
+                feedback.style.color = "#e74c3c";
+                return;
+            }
+
+            if (answer === currentQuestion.a) {
+                // ACERTOU
+                feedback.innerText = `Correto! O monstro sofreu ${currentQuestion.dmg} de dano!`;
+                feedback.style.color = "#27ae60";
+                
+                currentActiveMonster.hp -= currentQuestion.dmg;
+                
+                setTimeout(() => {
+                    document.getElementById('math-modal').classList.add('hidden');
+                    updateMonsterHPUI();
+                    checkMonsterDeath();
+                }, 1500);
+
+            } else {
+                // ERROU (Toma dano)
+                feedback.innerText = `Errado! O monstro te atacou e causou ${currentActiveMonster.damage} de dano!`;
+                feedback.style.color = "#c0392b";
+                
+                groupHp -= currentActiveMonster.damage;
+                updateGroupUI();
+
+                setTimeout(() => {
+                    document.getElementById('math-modal').classList.add('hidden');
+                }, 2000);
+            }
+        }
+
+        function checkMonsterDeath() {
+            if (currentActiveMonster.hp <= 0) {
+                alert(`Você derrotou o ${currentActiveMonster.name} e ganhou ${currentActiveMonster.coins} moedas!`);
+                
+                groupCoins += currentActiveMonster.coins;
+                updateGroupUI();
+
+                // Reseta a tela para buscar outro monstro
+                currentActiveMonster = null;
+                document.getElementById('combat-area').classList.add('hidden');
+                document.getElementById('monster-search-area').classList.remove('hidden');
+                document.getElementById('monster-input').value = "";
+            }
         }
     </script>
 </body>
