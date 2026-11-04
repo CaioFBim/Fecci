@@ -212,7 +212,7 @@
                 <p id="game-msg" class="error"></p>
             </div>
 
-            <!-- Area de Combate (Oculta até invocar) -->
+            <!-- Area de Combate -->
             <div id="combat-area" class="monster-area hidden">
                 <div class="monster-display">
                     <h2 id="monster-name-display">Nome do Monstro</h2>
@@ -250,8 +250,9 @@
         <div id="math-modal" class="modal hidden">
             <div class="modal-content">
                 <h2 id="math-title">Resolva a conta!</h2>
-                <h1 id="math-question" style="color: #2c3e50; font-size: 2.5em; margin: 20px 0;">2 + 2 = ?</h1>
-                <input type="number" id="math-answer" placeholder="Digite sua resposta">
+                <!-- Usamos texto livre no input para permitir que digitem vírgula -->
+                <h1 id="math-question" style="color: #2c3e50; font-size: 2.2em; margin: 20px 0;">2 + 2 = ?</h1>
+                <input type="text" id="math-answer" placeholder="Digite sua resposta">
                 <br>
                 <button onclick="checkMathAnswer()" style="width: 100%; margin-top: 10px;">Atacar!</button>
                 <p id="math-feedback" style="font-weight: bold; margin-top: 15px;"></p>
@@ -265,7 +266,6 @@
         let maxPlayers = 0;
         let currentPlayer = 1;
         let selectedClasses = [];
-        
         let groupHp = 30;
         let groupCoins = 0;
 
@@ -293,19 +293,73 @@
         let currentActiveMonster = null;
         let currentQuestion = null;
 
-        // --- CONTAS BÁSICAS PARA TESTE ---
+        // --- BANCO DE CONTAS ---
         const mathQuestions = {
             facil: [
-                { q: "10 + 15", a: 25, dmg: 0.3 },
-                { q: "20 - 8", a: 12, dmg: 0.3 }
+                { q: "Proporção: 10/20 = x/40. Valor de x", a: 20, dmg: 0.3 },
+                { q: "Proporção: 5/15 = 10/x. Valor de x", a: 30, dmg: 0.3 },
+                { q: "Proporção: 8/24 = x/3. Valor de x", a: 1, dmg: 0.3 },
+                { q: "Proporção: x/100 = 3/10. Valor de x", a: 30, dmg: 0.3 },
+                { q: "20% de 300", a: 60, dmg: 0.3 },
+                { q: "40% de 50", a: 20, dmg: 0.3 },
+                { q: "15% de 200", a: 30, dmg: 0.3 },
+                { q: "10% de 850", a: 85, dmg: 0.3 },
+                { q: "15²", a: 225, dmg: 0.3 },
+                { q: "25²", a: 625, dmg: 0.3 },
+                { q: "35²", a: 1225, dmg: 0.3 },
+                { q: "45²", a: 2025, dmg: 0.3 },
+                { q: "99²", a: 9801, dmg: 0.3 },
+                { q: "98²", a: 9604, dmg: 0.3 },
+                { q: "101²", a: 10201, dmg: 0.3 },
+                { q: "102²", a: 10404, dmg: 0.3 },
+                { q: "40 ÷ 5", a: 8, dmg: 0.3 },
+                { q: "60 ÷ 5", a: 12, dmg: 0.3 },
+                { q: "15 ÷ 5", a: 3, dmg: 0.3 },
+                { q: "25 ÷ 5", a: 5, dmg: 0.3 }
             ],
             medio: [
-                { q: "6 x 7", a: 42, dmg: 0.7 },
-                { q: "50 ÷ 2", a: 25, dmg: 0.7 }
+                { q: "Proporção: 12/36 = x/120. Valor de x", a: 40, dmg: 0.7 },
+                { q: "Proporção: 15/75 = 30/x. Valor de x", a: 150, dmg: 0.7 },
+                { q: "Proporção: 25/125 = x/500. Valor de x", a: 100, dmg: 0.7 },
+                { q: "Proporção: x/42 = 6/14. Valor de x", a: 18, dmg: 0.7 },
+                { q: "12% de 50", a: 6, dmg: 0.7 },
+                { q: "25% de 120", a: 30, dmg: 0.7 },
+                { q: "35% de 200", a: 70, dmg: 0.7 },
+                { q: "4% de 350", a: 14, dmg: 0.7 },
+                { q: "55²", a: 3025, dmg: 0.7 },
+                { q: "65²", a: 4225, dmg: 0.7 },
+                { q: "75²", a: 5625, dmg: 0.7 },
+                { q: "85²", a: 7225, dmg: 0.7 },
+                { q: "96²", a: 9216, dmg: 0.7 },
+                { q: "95²", a: 9025, dmg: 0.7 },
+                { q: "104²", a: 10816, dmg: 0.7 },
+                { q: "105²", a: 11025, dmg: 0.7 },
+                { q: "110 ÷ 5", a: 22, dmg: 0.7 },
+                { q: "145 ÷ 5", a: 29, dmg: 0.7 },
+                { q: "230 ÷ 5", a: 46, dmg: 0.7 },
+                { q: "34 ÷ 5", a: 6.8, dmg: 0.7 }
             ],
             dificil: [
-                { q: "12 x 12", a: 144, dmg: 1.0 },
-                { q: "(10 x 5) - 15", a: 35, dmg: 1.0 }
+                { q: "Proporção: 14/98 = x/49. Valor de x", a: 7, dmg: 1.0 },
+                { q: "Proporção: 35/105 = 15/x. Valor de x", a: 45, dmg: 1.0 },
+                { q: "Proporção: 2,5/10 = x/40. Valor de x", a: 10, dmg: 1.0 },
+                { q: "Proporção: x/144 = 12/48. Valor de x", a: 36, dmg: 1.0 },
+                { q: "15% de 45", a: 6.75, dmg: 1.0 },
+                { q: "22% de 150", a: 33, dmg: 1.0 },
+                { q: "3,5% de 400", a: 14, dmg: 1.0 },
+                { q: "18% de 25", a: 4.5, dmg: 1.0 },
+                { q: "95²", a: 9025, dmg: 1.0 },
+                { q: "105²", a: 11025, dmg: 1.0 },
+                { q: "115²", a: 13225, dmg: 1.0 },
+                { q: "125²", a: 15625, dmg: 1.0 },
+                { q: "91²", a: 8281, dmg: 1.0 },
+                { q: "92²", a: 8464, dmg: 1.0 },
+                { q: "108²", a: 11664, dmg: 1.0 },
+                { q: "109²", a: 11881, dmg: 1.0 },
+                { q: "127 ÷ 5", a: 25.4, dmg: 1.0 },
+                { q: "345 ÷ 5", a: 69, dmg: 1.0 },
+                { q: "482 ÷ 5", a: 96.4, dmg: 1.0 },
+                { q: "1024 ÷ 5", a: 204.8, dmg: 1.0 }
             ]
         };
 
@@ -356,7 +410,6 @@
                 currentPlayer++;
                 updateScreenText();
             } else {
-                // INICIA O JOGO
                 document.getElementById('screen-selection').classList.add('hidden');
                 document.getElementById('screen-game').classList.remove('hidden');
                 updateGroupUI();
@@ -389,12 +442,9 @@
             }
 
             msg.innerText = "";
-            
-            // Clona o objeto do monstro para não alterar os dados base
             currentActiveMonster = JSON.parse(JSON.stringify(monsters[input]));
             currentActiveMonster.name = input.toUpperCase();
 
-            // Atualiza UI
             document.getElementById('monster-search-area').classList.add('hidden');
             document.getElementById('combat-area').classList.remove('hidden');
             
@@ -410,7 +460,6 @@
             const maxHpText = document.getElementById('monster-max-hp-text');
             const fill = document.getElementById('monster-hp-fill');
 
-            // Arredonda para 1 casa decimal para evitar erros de ponto flutuante (ex: 0.700000001)
             currentActiveMonster.hp = Math.round(currentActiveMonster.hp * 10) / 10;
 
             hpText.innerText = currentActiveMonster.hp;
@@ -423,7 +472,6 @@
 
         function openQuestion(dificuldade) {
             const arr = mathQuestions[dificuldade];
-            // Sorteia uma pergunta da dificuldade escolhida
             currentQuestion = arr[Math.floor(Math.random() * arr.length)];
 
             document.getElementById('math-question').innerText = currentQuestion.q + " = ?";
@@ -435,7 +483,10 @@
         }
 
         function checkMathAnswer() {
-            const answer = parseFloat(document.getElementById('math-answer').value);
+            // Substitui vírgula por ponto para o Javascript entender e valida a resposta
+            let rawInput = document.getElementById('math-answer').value.trim();
+            rawInput = rawInput.replace(',', '.'); 
+            const answer = parseFloat(rawInput);
             const feedback = document.getElementById('math-feedback');
 
             if (isNaN(answer)) {
@@ -445,7 +496,6 @@
             }
 
             if (answer === currentQuestion.a) {
-                // ACERTOU
                 feedback.innerText = `Correto! O monstro sofreu ${currentQuestion.dmg} de dano!`;
                 feedback.style.color = "#27ae60";
                 
@@ -458,7 +508,6 @@
                 }, 1500);
 
             } else {
-                // ERROU (Toma dano)
                 feedback.innerText = `Errado! O monstro te atacou e causou ${currentActiveMonster.damage} de dano!`;
                 feedback.style.color = "#c0392b";
                 
@@ -478,7 +527,6 @@
                 groupCoins += currentActiveMonster.coins;
                 updateGroupUI();
 
-                // Reseta a tela para buscar outro monstro
                 currentActiveMonster = null;
                 document.getElementById('combat-area').classList.add('hidden');
                 document.getElementById('monster-search-area').classList.remove('hidden');
