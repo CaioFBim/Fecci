@@ -28,12 +28,40 @@ const allMonsters = {
     'guardião da equação': { lvl: 5, hp: 6, dmg: 1, coins: 5, abName: 'Escudo da Equação', abDesc: 'Início de rodada: recebe 3 de escudo.', cd: 0 }
 };
 
+// SUAS CONTAS FIXAS
+const mathQuestions = {
+    facil: [
+        { q: "10/20 = x/40", a: 20, dmg: 0.3 }, { q: "5/15 = 10/x", a: 30, dmg: 0.3 }, { q: "8/24 = x/3", a: 1, dmg: 0.3 }, { q: "x/100 = 3/10", a: 30, dmg: 0.3 },
+        { q: "20% de 300", a: 60, dmg: 0.3 }, { q: "40% de 50", a: 20, dmg: 0.3 }, { q: "15% de 200", a: 30, dmg: 0.3 }, { q: "10% de 850", a: 85, dmg: 0.3 },
+        { q: "15²", a: 225, dmg: 0.3 }, { q: "25²", a: 625, dmg: 0.3 }, { q: "35²", a: 1225, dmg: 0.3 }, { q: "45²", a: 2025, dmg: 0.3 },
+        { q: "99²", a: 9801, dmg: 0.3 }, { q: "98²", a: 9604, dmg: 0.3 }, { q: "101²", a: 10201, dmg: 0.3 }, { q: "102²", a: 10404, dmg: 0.3 },
+        { q: "40 ÷ 5", a: 8, dmg: 0.3 }, { q: "60 ÷ 5", a: 12, dmg: 0.3 }, { q: "15 ÷ 5", a: 3, dmg: 0.3 }, { q: "25 ÷ 5", a: 5, dmg: 0.3 }
+    ],
+    medio: [
+        { q: "12/36 = x/120", a: 40, dmg: 0.7 }, { q: "15/75 = 30/x", a: 150, dmg: 0.7 }, { q: "25/125 = x/500", a: 100, dmg: 0.7 }, { q: "x/42 = 6/14", a: 18, dmg: 0.7 },
+        { q: "12% de 50", a: 6, dmg: 0.7 }, { q: "25% de 120", a: 30, dmg: 0.7 }, { q: "35% de 200", a: 70, dmg: 0.7 }, { q: "4% de 350", a: 14, dmg: 0.7 },
+        { q: "55²", a: 3025, dmg: 0.7 }, { q: "65²", a: 4225, dmg: 0.7 }, { q: "75²", a: 5625, dmg: 0.7 }, { q: "85²", a: 7225, dmg: 0.7 },
+        { q: "96²", a: 9216, dmg: 0.7 }, { q: "95²", a: 9025, dmg: 0.7 }, { q: "104²", a: 10816, dmg: 0.7 }, { q: "105²", a: 11025, dmg: 0.7 },
+        { q: "110 ÷ 5", a: 22, dmg: 0.7 }, { q: "145 ÷ 5", a: 29, dmg: 0.7 }, { q: "230 ÷ 5", a: 46, dmg: 0.7 }, { q: "34 ÷ 5", a: 6.8, dmg: 0.7 },
+        { q: "412 ÷ 5", a: 82.4, dmg: 0.7 }, { q: "635 ÷ 5", a: 127, dmg: 0.7 }, { q: "87 ÷ 5", a: 17.4, dmg: 0.7 }, { q: "945 ÷ 5", a: 189, dmg: 0.7 }
+    ],
+    dificil: [
+        { q: "14/98 = x/49", a: 7, dmg: 2.0 }, { q: "35/105 = 15/x", a: 45, dmg: 2.0 }, { q: "2.5/10 = x/40", a: 10, dmg: 2.0 }, { q: "x/144 = 12/48", a: 36, dmg: 2.0 },
+        { q: "15% de 45", a: 6.75, dmg: 2.0 }, { q: "22% de 150", a: 33, dmg: 2.0 }, { q: "3.5% de 400", a: 14, dmg: 2.0 }, { q: "18% de 25", a: 4.5, dmg: 2.0 },
+        { q: "95²", a: 9025, dmg: 2.0 }, { q: "105²", a: 11025, dmg: 2.0 }, { q: "115²", a: 13225, dmg: 2.0 }, { q: "125²", a: 15625, dmg: 2.0 },
+        { q: "91²", a: 8281, dmg: 2.0 }, { q: "92²", a: 8464, dmg: 2.0 }, { q: "108²", a: 11664, dmg: 2.0 }, { q: "109²", a: 11881, dmg: 2.0 },
+        { q: "127 ÷ 5", a: 25.4, dmg: 2.0 }, { q: "345 ÷ 5", a: 69, dmg: 2.0 }, { q: "482 ÷ 5", a: 96.4, dmg: 2.0 }, { q: "1024 ÷ 5", a: 204.8, dmg: 2.0 },
+        { q: "1384 ÷ 5", a: 276.8, dmg: 2.0 }, { q: "273.5 ÷ 5", a: 54.7, dmg: 2.0 }, { q: "4961 ÷ 5", a: 992.2, dmg: 2.0 }, { q: "807.3 ÷ 5", a: 161.46, dmg: 2.0 }
+    ]
+};
+
+// SEUS MACETES ORIGINAIS
 const macetesDB = [
-    { text: "Multiplicação por 11: Separe os dígitos e some no meio! (Ex: 35 * 11 -> 3 e 5, 3+5=8 -> 385)", questions: [{ q: "43 * 11", a: 473, dmg: 2.0 }, { q: "62 * 11", a: 682, dmg: 2.0 }] },
-    { text: "Quadrado terminado em 5: Multiplique o 1º dígito pelo próximo e adicione 25! (Ex: 35² -> 3*4=12, termina 25 -> 1225)", questions: [{ q: "85²", a: 7225, dmg: 2.0 }, { q: "45²", a: 2025, dmg: 2.0 }] },
-    { text: "Divisão por 5: Multiplique por 2 e corte o zero! (Ex: 140 / 5 -> 280 / 10 = 28)", questions: [{ q: "320 / 5", a: 64, dmg: 2.0 }, { q: "610 / 5", a: 122, dmg: 2.0 }] },
-    { text: "Multiplicação por 9: Multiplique por 10 e subtraia o número original! (Ex: 23 * 9 -> 230 - 23 = 207)", questions: [{ q: "45 * 9", a: 405, dmg: 2.0 }, { q: "72 * 9", a: 648, dmg: 2.0 }] },
-    { text: "Divisão por 50: Multiplique por 2 e divida por 100! (Ex: 450 / 50 -> 900 / 100 = 9)", questions: [{ q: "850 / 50", a: 17, dmg: 2.0 }, { q: "1300 / 50", a: 26, dmg: 2.0 }] }
+    { text: "Simplificação de Proporções: Em frações igualadas, você pode simplificar na horizontal ou na vertical. Identifique por qual fator um número foi multiplicado/dividido e aplique a mesma operação no 'x'. A regra de ouro é: nunca simplifique na diagonal." },
+    { text: "Cálculo de Porcentagem (Cortar zeros/Deslocar vírgula): Multiplique os dois valores e compense a divisão por 100. Corte dois zeros ou desloque a vírgula duas casas para a esquerda." },
+    { text: "Quadrado de Números Terminados em 5: Pegue o algarismo antes do 5 e multiplique pelo seu sucessor (X vezes X+1). O final será obrigatoriamente 25. Exemplo: 65² -> 6 x 7 = 42, adicione 25 -> 4225." },
+    { text: "Quadrado de Números Próximos a 100: Encontre a distância até 100. Se for menor, subtraia essa distância do número. Se for maior, some. Depois, eleve a distância ao quadrado nas duas últimas casas. Ex: 106² -> 106+6=112 e 6²=36 -> 11236." },
+    { text: "Divisão por 5: Para dividir de forma rápida, multiplique o número por 2 e divida por 10 (cortar um zero ou deslocar a vírgula para a esquerda). Ex: 127 ÷ 5 -> 127 x 2 = 254 -> 25,4." }
 ];
 
 const shopInventory = [ 
@@ -55,7 +83,6 @@ const shopInventory = [
     { id: 'dado_branco', name: 'Dado Branco (Especial)', img: '', price: 5, type: 'special' }
 ];
 
-let mathQuestions = { dificil: [] }; 
 let maxPlayers = 0, currentPlayerIndex = 1, players = [], currentRound = 1;
 let activeMonster = null, currentMathQ = null, dicePool = 3;
 let monstersKilled = 0, shopVisits = 0, globalWhiteDiceStock = 5;
@@ -77,8 +104,9 @@ function setPlayers(num) {
     document.getElementById('screen-selection').classList.remove('hidden'); 
     if(maxPlayers === 1) document.getElementById('btn-skip').disabled = true;
 
+    // Sorteia os macetes para esta partida
     let shuffled = [...macetesDB].sort(() => 0.5 - Math.random());
-    activeMacetes = shuffled.slice(0, 3);
+    activeMacetes = shuffled.slice(0, 5); // Traz até 5 macetes agora
 }
 
 function checkCharacter() {
@@ -217,54 +245,10 @@ function updateMonsterUI() {
     document.getElementById('monster-hp-fill').style.width = Math.max(0, (activeMonster.hp / activeMonster.maxHp) * 100) + '%';
 }
 
-function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-
-function generateMathQuestion(dificuldade) {
-    let q = "", a = 0, dmg = 0.3;
-    let type = getRandomInt(1, 4); 
-
-    if (dificuldade === 'facil') {
-        dmg = 0.3;
-        if (type === 1 || type === 2) { 
-            let n1 = getRandomInt(5, 20) * 10; let n2 = getRandomInt(1, 9) * 10;
-            q = `${n1} + ${n2}`; a = n1 + n2;
-        } else { 
-            let n1 = getRandomInt(3, 9); let n2 = getRandomInt(3, 9);
-            q = `${n1} x ${n2}`; a = n1 * n2;
-        }
-    } else if (dificuldade === 'medio') {
-        dmg = 0.7;
-        if (type === 1) { 
-            let n1 = getRandomInt(12, 85); q = `${n1} x 11`; a = n1 * 11;
-        } else if (type === 2) { 
-            let n1 = getRandomInt(15, 45); let n2 = (Math.random() > 0.5) ? 9 : 99; q = `${n1} x ${n2}`; a = n1 * n2;
-        } else { 
-            let percent = getRandomInt(1, 5) * 10; let val = getRandomInt(12, 60) * 10;
-            q = `${percent}% de ${val}`; a = (percent / 100) * val;
-        }
-    } else if (dificuldade === 'dificil') {
-        dmg = 2.0;
-        if (type === 1) { 
-            let dezenas = getRandomInt(1, 11); let base = (dezenas * 10) + 5; q = `${base}²`; a = base * base;
-        } else if (type === 2) { 
-            let num = getRandomInt(123, 1999); q = `${num} ÷ 5`; a = num / 5;
-        } else if (type === 3) {
-            let n1 = getRandomInt(2, 9); let n2 = n1 * getRandomInt(3, 9); let n3 = n1 * getRandomInt(2, 5); let n4 = (n2 / n1) * n3;
-            q = `${n1}/${n2} = x/${n4}. Valor de x`; a = n3;
-        } else {
-            let base = getRandomInt(4, 30) * 4; q = `${base} x 25`; a = base * 25;
-        }
-    }
-    a = Math.round(a * 10) / 10;
-    return { q, a, dmg };
-}
-
 function openQuestion(dificuldade) {
-    currentMathQ = generateMathQuestion(dificuldade);
-    
-    if (dificuldade === 'dificil' && mathQuestions.dificil.length > 0) {
-        if (Math.random() < 0.40) currentMathQ = mathQuestions.dificil[Math.floor(Math.random() * mathQuestions.dificil.length)];
-    }
+    // Puxa aleatoriamente DENTRO da sua lista fixa
+    let pool = mathQuestions[dificuldade];
+    currentMathQ = pool[Math.floor(Math.random() * pool.length)];
 
     document.getElementById('math-question').innerText = currentMathQ.q + " = ?"; 
     document.getElementById('math-answer').value = ""; document.getElementById('math-feedback').innerText = "";
@@ -280,8 +264,8 @@ function toggleGrimorioView() {
         totalGrimorioViews++;
         if (totalGrimorioViews > 2) { attacker.hp -= 1; alert(`O grimório exige um sacrifício de sangue!\n${attacker.name} perdeu 1 de Vida.`); updatePlayersUI(); }
         let list = document.getElementById('grimorio-list'); list.innerHTML = "";
-        if (maceteIndex === 0) { list.innerHTML = "<li>Nenhum macete descoberto ainda...</li>"; } 
-        else { activeMacetes.slice(0, maceteIndex).forEach(m => { list.innerHTML += `<li>${m.text}</li>`; }); }
+        if (maceteIndex === 0) { list.innerHTML = "<li>Nenhum macete descoberto ainda... (Mate monstros para desbloquear)</li>"; } 
+        else { activeMacetes.slice(0, maceteIndex).forEach(m => { list.innerHTML += `<li style="margin-bottom: 8px;">${m.text}</li>`; }); }
         gDiv.classList.remove('hidden');
     } else { gDiv.classList.add('hidden'); }
 }
@@ -329,31 +313,55 @@ function resolveMonsterDeath() {
     if(isFinalPhase) { alert(`PARABÉNS! VOCÊS DERROTARAM A TRÍADE FINAL E VENCERAM O JOGO!`); location.reload(); return; }
 
     alert(`Derrotaram o ${activeMonster.name.toUpperCase()}! Recebem ${activeMonster.coins} moedas.`);
+    
+    // Adiciona as moedas para todos os jogadores vivos
     players.forEach(p => { if (p.hp > 0) p.coins += activeMonster.coins; });
+    
     activeMonster = null; monstersKilled++; document.getElementById('kill-count').innerText = monstersKilled;
     document.getElementById('combat-area').classList.add('hidden'); document.getElementById('monster-search-area').classList.remove('hidden'); document.getElementById('monster-input').value = "";
-    players.forEach(p => p.hasActed = false); updatePlayersUI();
+    players.forEach(p => p.hasActed = false); 
+    updatePlayersUI(); // Garante que as moedas apareçam no card atrás
     
-    if (monstersKilled % 3 === 0 && maceteIndex < 3) {
+    // Libera macetes a cada 3 monstros
+    if (monstersKilled % 3 === 0 && maceteIndex < 5) {
         let novoMacete = activeMacetes[maceteIndex];
         document.getElementById('macete-text').innerText = novoMacete.text;
         document.getElementById('macete-modal').classList.remove('hidden');
-        mathQuestions.dificil = mathQuestions.dificil.concat(novoMacete.questions);
         maceteIndex++;
     }
 
+    // Abre a loja a cada 3 monstros
     if (monstersKilled % 3 === 0 && shopVisits < 3) { shopVisits++; openShop(); }
 }
 
 function closeMacete() { document.getElementById('macete-modal').classList.add('hidden'); }
 function resetActionUI() { currentAttackBuffs = { mult: 1, ignoreArmor: 0, immune: false, receiveHalfDmg: false, reduceReceiveDmg: 0 }; document.getElementById('difficulty-section').classList.add('hidden'); document.getElementById('dice-section').classList.remove('hidden'); }
 
-function openShop() { document.getElementById('shop-modal').classList.remove('hidden'); let select = document.getElementById('shop-player-select'); select.innerHTML = ""; players.forEach((p, i) => { if(p.hp > 0) select.innerHTML += `<option value="${i}">${p.name}</option>`; }); renderShopItems(); }
+function openShop() { 
+    document.getElementById('shop-modal').classList.remove('hidden'); 
+    let select = document.getElementById('shop-player-select'); 
+    select.innerHTML = ""; 
+    
+    players.forEach((p, i) => { 
+        if(p.hp > 0) select.innerHTML += `<option value="${i}">${p.name}</option>`; 
+    }); 
+    
+    // CORREÇÃO DO 1 JOGADOR: Força a seleção do primeiro item para evitar falhas
+    if(select.options.length > 0) select.selectedIndex = 0; 
+
+    renderShopItems(); 
+}
 
 function renderShopItems() {
-    let pIndex = parseInt(document.getElementById('shop-player-select').value); if (isNaN(pIndex)) return; 
+    let select = document.getElementById('shop-player-select');
+    if(!select.value && select.options.length > 0) select.selectedIndex = 0; // Garante seleção
+    
+    let pIndex = parseInt(select.value); 
+    if (isNaN(pIndex)) return; 
+    
     let player = players[pIndex];
-    document.getElementById('shop-player-coins').innerText = player.coins; document.getElementById('shop-whitedice-stock').innerText = globalWhiteDiceStock;
+    document.getElementById('shop-player-coins').innerText = player.coins; // Mostra as moedas exatas na loja
+    document.getElementById('shop-whitedice-stock').innerText = globalWhiteDiceStock;
     let container = document.getElementById('shop-items-container'); container.innerHTML = "";
     
     shopInventory.forEach(item => {
@@ -372,7 +380,13 @@ function renderShopItems() {
 
 function buyItem(itemId) {
     let pIndex = parseInt(document.getElementById('shop-player-select').value); let player = players[pIndex]; let item = shopInventory.find(i => i.id === itemId);
-    if (player.coins >= item.price) { player.coins -= item.price; player.inventory.push(item); if (itemId === 'dado_branco') globalWhiteDiceStock--; updatePlayersUI(); renderShopItems(); }
+    if (player.coins >= item.price) { 
+        player.coins -= item.price; // Cobra o valor
+        player.inventory.push(item); 
+        if (itemId === 'dado_branco') globalWhiteDiceStock--; 
+        updatePlayersUI(); // Atualiza painel do fundo
+        renderShopItems(); // Atualiza a tela da loja na mesma hora (para os botões ficarem cinzas se faltar grana)
+    }
 }
 
 function closeShop() { document.getElementById('shop-modal').classList.add('hidden'); }
